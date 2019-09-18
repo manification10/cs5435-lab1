@@ -21,6 +21,7 @@ def run_server():
     session = Session()
 
     register_users(session)
+    print("load_breaches")
     load_breaches(session)
 
     session.commit()
@@ -33,4 +34,3 @@ def run_server():
         keyword='db',
     ))
     run(host='localhost', port=8080)
-
