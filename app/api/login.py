@@ -42,7 +42,7 @@ def do_login(db):
         print("register",username,password)
         print(user)
         breaches = get_breaches(db, username)
-        print("breaches*******",breaches, breaches[0].password)
+        print("breaches*******",breaches, breaches[0][0].password)
         if user is not None:
             response.status = 401
             error = "{} is already taken.".format(username)
