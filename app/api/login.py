@@ -27,6 +27,7 @@ def do_login(db):
     error = None
     user = get_user(db, username)
     print(user)
+    # Login
     if (request.forms.get("login")):
         if user is None:
             response.status = 401
@@ -36,7 +37,9 @@ def do_login(db):
             error = "Wrong password for {}.".format(username)
         else:
             pass  # Successful login
+    # Register
     elif (request.forms.get("register")):
+        print("register",username,password)
         if user is not None:
             response.status = 401
             error = "{} is already taken.".format(username)
@@ -60,5 +63,3 @@ def do_logout(db, session):
     delete_session(db, session)
     response.delete_cookie("session")
     return redirect("/login")
-
-
