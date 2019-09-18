@@ -40,6 +40,7 @@ def do_login(db):
     # Register
     elif (request.forms.get("register")):
         print("register",username,password)
+        print(user)
         if user is not None:
             response.status = 401
             error = "{} is already taken.".format(username)
