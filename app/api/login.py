@@ -14,7 +14,7 @@ from app.models.session import (
     get_session_by_username,
     logged_in,
 )
-from app.models.breaches import get_breaches
+from app.models.breaches import get_passwords_from_breaches
 
 @get('/login')
 def login():
@@ -39,14 +39,10 @@ def do_login(db):
             pass  # Successful login
     # Register
     elif (request.forms.get("register")):
-        print("register",username,password)
-        print(user)
-        breaches = get_breaches(db, username)
-        breached_password = breaches[0][0].password # first password for plain text password
-
-        if password == breached_password:
+        breached_passwords = get_passwords_from_breaches(db, username)
+        if password in breached_password:
             response.status = 401
-            error = "Breached password for {}. Try a different password.".format(username)       
+            error = "Breached password for {}. Try a different password.".format(username)
         if user is not None:
             response.status = 401
             error = "{} is already taken.".format(username)
