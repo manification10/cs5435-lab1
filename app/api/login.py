@@ -40,7 +40,7 @@ def do_login(db):
     # Register
     elif (request.forms.get("register")):
         breached_passwords = get_passwords_from_breaches(db, username)
-        if password in breached_password:
+        if password in breached_passwords:
             response.status = 401
             error = "Breached password for {}. Try a different password.".format(username)
         if user is not None:
