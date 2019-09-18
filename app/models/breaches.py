@@ -53,6 +53,5 @@ def get_breaches(db, username):
     plaintext_breaches = db.query(PlaintextBreach).filter_by(username=username).all()
     hashed_breaches = db.query(HashedBreach).filter_by(username=username).all()
     salted_breaches = db.query(SaltedBreach).filter_by(username=username).all()
+    print("*********** plain text breaches",plaintext_breaches[0:5])
     return (plaintext_breaches, hashed_breaches, salted_breaches)
-
-
