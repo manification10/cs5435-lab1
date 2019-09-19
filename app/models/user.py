@@ -21,7 +21,7 @@ class User(Base):
 
 def create_user(db, username, password): # keep signature unchanged
     salt = random_salt()
-    salt_password = hash_pbkdf2(password, salt)
+    salted_password = hash_pbkdf2(password, salt)
     user = User(
         username=username,
         password = salted_password,
