@@ -88,7 +88,7 @@ def get_passwords_from_breaches(db, username):
     for breach in salted_breaches:
         salt_password = brute_force_attack(breach.salted_password, breach.salt)
         if salt_password:
-            breached_passwords.append(salt_passwoord)
+            breached_passwords.append(salt_password)
     return breached_passwords
 
 def get_breaches(db, username):
