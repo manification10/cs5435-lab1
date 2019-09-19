@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-
+from app.util.hash import random_salt, hash_pbkdf2
 from app.models.base import Base
 
 class User(Base):
@@ -7,6 +7,7 @@ class User(Base):
 
     username = Column(String, primary_key=True)
     password = Column(String)
+    salt = Column(String)
     coins = Column(Integer)
 
     def get_coins(self):
@@ -18,10 +19,13 @@ class User(Base):
     def debit_coins(self, i):
         self.coins -= i
 
-def create_user(db, username, password):
+def create_user(db, username, password): # keep signature unchanged
+    salt = random_salt()
+    salt_password = hash_pbkdf2(password, salt)
     user = User(
         username=username,
-        password=password,
+        password = salted_password,
+        salt = salt,
         coins=100,
     )
     db.add(user)
@@ -29,5 +33,3 @@ def create_user(db, username, password):
 
 def get_user(db, username):
     return db.query(User).filter_by(username=username).first()
-
-
