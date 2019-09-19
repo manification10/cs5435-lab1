@@ -78,8 +78,6 @@ def get_passwords_from_breaches(db, username):
     hashed_breaches = breaches[1]
     salted_breaches = breaches[2]
     breached_passwords = []
-    print("password from breaches",username)
-    print("breaches*****",breaches)
     for breach in plaintext_breaches:
         breached_passwords.append(breach.password)
     for breach in hashed_breaches:
