@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 from app.models.base import Base
 from app.util.hash import hash_pbkdf2
 import json
+from csv import reader
 
 COMMON_PASSWORDS_LOOKUP_TABLE_PATH = "common_passwords_lookup_table.json"
 COMMON_PASSWORDS_PATH = 'common_passwords.txt'
