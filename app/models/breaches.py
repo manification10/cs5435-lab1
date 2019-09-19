@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String
 from app.models.base import Base
+from app.util.hash import hash_pbkdf2
 import json
 
 COMMON_PASSWORDS_LOOKUP_TABLE_PATH = "common_passwords_lookup_table.json"
+COMMON_PASSWORDS_PATH = 'common_passwords.txt'
 
 class PlaintextBreach(Base):
     __tablename__ = "plaintext_breaches"
@@ -56,6 +58,19 @@ def get_lookup_table():
         hashes = json.load(json_file)
     return hashes
 
+def load_common_passwords():
+    with open(COMMON_PASSWORDS_PATH) as f:
+        pws = list(reader(f))
+    return pws
+
+def brute_force_attack(target_hash, target_salt):
+    common_passwords = load_common_passwords()
+    for password in common_passwords:
+        resulting_hash = hash_pbkdf2(password[0], target_salt)
+        if target_hash == resulting_hash:
+            return password[0]
+    return None
+
 def get_passwords_from_breaches(db, username):
     breaches = get_breaches(db, username)
     plaintext_breaches = breaches[0]
@@ -68,7 +83,9 @@ def get_passwords_from_breaches(db, username):
         hash_dict = get_lookup_table()
         breached_passwords.append(hash_dict[breach.hashed_password])
     for breach in salted_breaches:
-        breached_passwords.append(breach.salted_password)
+        salt_password = brute_force_attack(breach.salted_password, breach.salt)
+        if password:
+            breached_passwords.append(salt_passwoord)
     return breached_passwords
 
 def get_breaches(db, username):
